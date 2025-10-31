@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Game.Scripts
+namespace Game.Scripts.InputSystem
 {
     public class DragAndDropController : MonoBehaviour
     {

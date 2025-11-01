@@ -9,6 +9,8 @@ namespace Game.Scripts.HexSystem
 {
     public class MergeSystem : MonoBehaviour
     {
+        public event Action<HexCell> OnCollapse;
+        
         [SerializeField] private HexGrid _grid;
         [SerializeField] private float _moveDuration = 0.3f;
         [SerializeField] private float _pieceHeight = 0.1f;
@@ -162,6 +164,7 @@ namespace Game.Scripts.HexSystem
             }
             
             yield return new WaitForSeconds(actualDuration  + pieces.Length * delayStep);
+            OnCollapse?.Invoke(cell);
         }
     }
 }

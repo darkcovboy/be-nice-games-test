@@ -14,6 +14,8 @@ namespace Game.Scripts.HexSystem
         [SerializeField] private int _maxStack = 10;
 
         private bool _isMerging;
+        
+        private readonly List<HexPiece> _buffer = new();
 
         public void StartMerge(HexCell startCell)
         {
@@ -41,39 +43,38 @@ namespace Game.Scripts.HexSystem
             if (fromCell.IsEmpty)
                 yield break;
             
-            Debug.Log($"Merging from cell {fromCell}");
 
-            var pieces = fromCell.HexPieces.ToArray();
-            var affectedNeighbors = new HashSet<HexCell>(); // соседи, в которые что-то перелетело
+            _buffer.Clear();
+            foreach (var p in fromCell.HexPieces)
+                _buffer.Add(p);
+
+            HashSet<HexCell> affectedNeighbors = new HashSet<HexCell>();
+            var neighbors = _grid.GetNeighbors(fromCell);
 
 
-            foreach (var piece in pieces)
+            foreach (var piece in _buffer)
             {
                 var color = piece.ColorType;
-                var neighbors = _grid.GetNeighbors(fromCell);
-
-                bool moved = false;
 
                 foreach (var neighbor in neighbors)
                 {
                     if (neighbor.IsFull)
                         continue;
 
-                    if (!neighbor.IsEmpty && neighbor.GetTop().ColorType == color)
-                    {
-                        fromCell.Pop();
+                    if (neighbor.IsEmpty || neighbor.GetTop().ColorType != color) continue;
+                    
+                    fromCell.Pop();
                         
-                        Vector3 target = neighbor.GetTopPositionWorld();
+                    Vector3 target = neighbor.GetTopPositionWorld();
 
-                        yield return piece.MoveTo(target, _moveDuration);
+                    yield return piece.MoveTo(target, _moveDuration);
 
-                        neighbor.Add(piece);
+                    neighbor.Add(piece);
 
-                        TryCollapse(neighbor);
-                        affectedNeighbors.Add(neighbor);
+                    TryCollapse(neighbor);
+                    affectedNeighbors.Add(neighbor);
 
-                        break;
-                    }
+                    break;
                 }
             }
 
@@ -88,9 +89,18 @@ namespace Game.Scripts.HexSystem
             if (cell.HexPieces.Count < _maxStack)
                 return;
 
-            var piecesArray = cell.HexPieces.ToArray();
-            var firstColor = piecesArray[0].ColorType;
-            bool allSame = piecesArray.All(p => p.ColorType == firstColor);
+            var pieces = cell.HexPieces.ToArray();
+            var firstColor = pieces[0].ColorType;
+            bool allSame = true;
+
+            for (int i = 1; i < pieces.Length; i++)
+            {
+                if (pieces[i].ColorType != firstColor)
+                {
+                    allSame = false;
+                    break;
+                }
+            }
 
             if (!allSame)
                 return;

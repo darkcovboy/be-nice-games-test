@@ -51,34 +51,65 @@ namespace Game.Scripts.HexSystem
 
             HashSet<HexCell> affectedNeighbors = new HashSet<HexCell>();
             var neighbors = _grid.GetNeighbors(fromCell);
+            
+            const float delayStep = 0.05f;
+            float currentDelay = 0f;
+            HexColorType? lastColor = null;
+            List<Tween> currentColorTweens = new();
 
+
+            
 
             foreach (var piece in _buffer)
             {
                 var color = piece.ColorType;
-
-                foreach (var neighbor in neighbors)
+                
+                if (lastColor.HasValue && lastColor.Value != color)
                 {
+                    foreach (var t in currentColorTweens)
+                        yield return t.WaitForCompletion();
+
+                    currentColorTweens.Clear();
+                    currentDelay = 0f;
+                    lastColor = color;
+                    
+                    yield return new WaitForSeconds(0.05f);
+                }
+                else if (!lastColor.HasValue)
+                {
+                    lastColor = color;
+                }
+                
+                for (var i = 0; i < neighbors.Length; i++)
+                {
+                    var neighbor = neighbors[i];
                     if (neighbor.IsFull)
                         continue;
 
                     if (neighbor.IsEmpty || neighbor.GetTop().ColorType != color) continue;
-                    
+
                     fromCell.Pop();
-                        
+
                     Vector3 target = neighbor.GetTopPositionWorld();
 
-                    yield return piece.MoveTo(target, _moveDuration).WaitForCompletion();
-
+                    Tween tween = piece.MoveTo(target, _moveDuration)
+                        .SetDelay(currentDelay)
+                        .OnComplete(() =>
+                        {
+                            TryCollapse(neighbor);
+                            affectedNeighbors.Add(neighbor);
+                        });
+                    
                     neighbor.Add(piece);
-
-                    TryCollapse(neighbor);
-                    affectedNeighbors.Add(neighbor);
-
+                    currentColorTweens.Add(tween);
+                    currentDelay += delayStep;
                     break;
                 }
             }
-
+            
+            foreach (var t in currentColorTweens)
+                yield return t.WaitForCompletion();
+            
             foreach (var neighbor in affectedNeighbors)
             {
                 yield return MergeFromCell(neighbor);
@@ -106,11 +137,24 @@ namespace Game.Scripts.HexSystem
             if (!allSame)
                 return;
 
-            while (cell.HexPieces.Count > 0)
+            StartCoroutine(DisappearPieces(cell, pieces));
+        }
+
+        private IEnumerator DisappearPieces(HexCell cell, HexPiece[] pieces)
+        {
+            cell.HexPieces.Clear();
+
+            float delayStep = 0.05f;
+
+            for (int i = 0; i < pieces.Length; i++)
             {
-                var piece = cell.Pop();
-                Destroy(piece.gameObject);
+                var piece = pieces[i];
+
+                piece.Disappear(0.25f)
+                    .SetDelay(i * delayStep);
             }
+            
+            yield return new WaitForSeconds(0.25f + pieces.Length * delayStep);
         }
     }
 }

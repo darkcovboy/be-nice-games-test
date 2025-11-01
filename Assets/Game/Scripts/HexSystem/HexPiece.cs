@@ -46,6 +46,14 @@ namespace Game.Scripts.HexSystem
             return seq;
         }
         
+        public Tween Disappear(float duration)
+        {
+            var seq = DOTween.Sequence();
+            seq.Join(transform.DOScale(Vector3.zero, duration).SetEase(Ease.InQuad));
+            return seq.OnComplete(() => Destroy(gameObject));
+        }
+
+        
         private float GetHexFlipYAngle(Vector3 dir)
         {
             float angle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;

@@ -365,7 +365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _grid: {fileID: 2550463727031562597}
-  _moveDuration: 0.2
+  _moveDuration: 2
   _pieceHeight: 0.2
   _maxStack: 10
 --- !u!1 &223524998
@@ -665,7 +665,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -1285,15 +1285,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7494865354181197163, guid: d67b0ec79f2359a478c1db370e535c3f, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7494865354181197163, guid: d67b0ec79f2359a478c1db370e535c3f, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7494865354181197163, guid: d67b0ec79f2359a478c1db370e535c3f, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7494865354181197163, guid: d67b0ec79f2359a478c1db370e535c3f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

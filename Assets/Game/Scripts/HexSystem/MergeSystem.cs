@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Game.Scripts.HexSystem
@@ -67,7 +68,7 @@ namespace Game.Scripts.HexSystem
                         
                     Vector3 target = neighbor.GetTopPositionWorld();
 
-                    yield return piece.MoveTo(target, _moveDuration);
+                    yield return piece.MoveTo(target, _moveDuration).WaitForCompletion();
 
                     neighbor.Add(piece);
 

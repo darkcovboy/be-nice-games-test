@@ -33,7 +33,6 @@ namespace Game.Scripts.HexSystem
             HexPieces.Push(hexPiece);
             hexPiece.SetParentCell(this);
         }
-
         
         public HexPiece Pop()
         {
@@ -74,5 +73,15 @@ namespace Game.Scripts.HexSystem
         }
 
         public bool IsEmpty => HexPieces.Count == 0;
+
+        public void AddStack(HexPiece[] hexPieces)
+        {
+            foreach (var hexPiece in hexPieces)
+            {
+                if (!HexPieces.Contains(hexPiece))
+                    HexPieces.Push(hexPiece);
+                hexPiece.SetParentCell(this);
+            }
+        }
     }
 }

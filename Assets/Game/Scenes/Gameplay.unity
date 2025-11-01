@@ -365,7 +365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _grid: {fileID: 2550463727031562597}
-  _moveDuration: 2
+  _moveDuration: 0.9
   _pieceHeight: 0.2
   _maxStack: 10
 --- !u!1 &223524998

@@ -15,6 +15,7 @@ namespace Game.Scripts.HexSystem
         [SerializeField] private int _maxStack = 10;
 
         private bool _isMerging;
+        private float _currentSpeedMultiplier = 1f;
         
         private readonly List<HexPiece> _buffer = new();
 
@@ -91,8 +92,10 @@ namespace Game.Scripts.HexSystem
                     fromCell.Pop();
 
                     Vector3 target = neighbor.GetTopPositionWorld();
+                    
+                    float actualDuration = _moveDuration / _currentSpeedMultiplier;
 
-                    Tween tween = piece.MoveTo(target, _moveDuration)
+                    Tween tween = piece.MoveTo(target, actualDuration)
                         .SetDelay(currentDelay)
                         .OnComplete(() =>
                         {
@@ -114,6 +117,8 @@ namespace Game.Scripts.HexSystem
             {
                 yield return MergeFromCell(neighbor);
             }
+            
+            _currentSpeedMultiplier *= 1.3f;
         }
         
         private void TryCollapse(HexCell cell)
@@ -144,17 +149,19 @@ namespace Game.Scripts.HexSystem
         {
             cell.HexPieces.Clear();
 
+            float baseDuration = 0.25f;
+            float actualDuration = baseDuration / _currentSpeedMultiplier;
             float delayStep = 0.05f;
 
             for (int i = 0; i < pieces.Length; i++)
             {
                 var piece = pieces[i];
 
-                piece.Disappear(0.25f)
+                piece.Disappear(actualDuration)
                     .SetDelay(i * delayStep);
             }
             
-            yield return new WaitForSeconds(0.25f + pieces.Length * delayStep);
+            yield return new WaitForSeconds(actualDuration  + pieces.Length * delayStep);
         }
     }
 }

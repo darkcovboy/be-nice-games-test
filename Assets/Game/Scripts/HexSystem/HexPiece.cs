@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 
@@ -9,6 +10,13 @@ namespace Game.Scripts.HexSystem
         [SerializeField] private HexColorType _hexColorType;
         public HexColorType ColorType => _hexColorType;
         public HexCell CurrentCell { get; private set; }
+        
+        private Tween _activeTween;
+
+        private void OnDestroy()
+        {
+            _activeTween?.Kill();
+        }
 
         public void SetParentCell(HexCell cell)
         {
@@ -18,6 +26,8 @@ namespace Game.Scripts.HexSystem
 
         public Tween MoveTo(Vector3 target, float duration, float arcHeight = 1.25f)
         {
+            _activeTween?.Kill();
+            
             Vector3 start = transform.position;
             Vector3 middle = (start + target) / 2f;
             middle.y += arcHeight;
@@ -43,17 +53,23 @@ namespace Game.Scripts.HexSystem
                 transform.rotation = baseRot * Quaternion.AngleAxis(angle, localAxis);
             }).SetEase(Ease.InOutSine));
 
+            _activeTween = seq;
             return seq;
         }
-        
+
         public Tween Disappear(float duration)
         {
+            _activeTween?.Kill();
             var seq = DOTween.Sequence();
             seq.Join(transform.DOScale(Vector3.zero, duration).SetEase(Ease.InQuad));
-            return seq.OnComplete(() => Destroy(gameObject));
+            _activeTween = seq;
+            return seq.OnComplete(() =>
+            {
+                _activeTween = null;
+                Destroy(gameObject);
+            });
         }
 
-        
         private float GetHexFlipYAngle(Vector3 dir)
         {
             float angle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;

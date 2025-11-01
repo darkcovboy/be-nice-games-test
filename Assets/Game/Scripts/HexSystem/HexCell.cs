@@ -42,8 +42,12 @@ namespace Game.Scripts.HexSystem
 
             return HexPieces.Pop();
         }
-
-
+        
+        public HexPiece GetTop()
+        {
+            return HexPieces.Count > 0 ? HexPieces.Peek() : null;
+        }
+        
         public bool TryGetPosition(ref Vector3 position)
         {
             if (IsFull)
@@ -60,8 +64,6 @@ namespace Game.Scripts.HexSystem
 
         public bool IsFull => HexPieces.Count >= MaxPieces;
 
-        public bool IsEmpty => HexPieces.Count == 0;
-
         private void RearrangeStackPositions()
         {
             var array = HexPieces.Reverse().ToArray();
@@ -70,5 +72,7 @@ namespace Game.Scripts.HexSystem
                 array[i].transform.position = transform.position + Vector3.up * (i * 0.2f) + new Vector3(0f,0.2f,0f);
             }
         }
+
+        public bool IsEmpty => HexPieces.Count == 0;
     }
 }

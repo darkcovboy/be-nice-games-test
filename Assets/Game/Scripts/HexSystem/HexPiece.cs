@@ -6,7 +6,6 @@ namespace Game.Scripts.HexSystem
     public class HexPiece : MonoBehaviour
     {
         [SerializeField] private HexColorType _hexColorType;
-        
         public HexColorType ColorType => _hexColorType;
         public HexCell CurrentCell { get; private set; }
 

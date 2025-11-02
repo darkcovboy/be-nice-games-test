@@ -36,12 +36,19 @@ namespace Game.Scripts.Effects
 
         private void MoveHexesAndPlay(HexCell cell)
         {
+            var topPiece = cell.GetTop();
+            float yOffset = 0.1f;
+            
+            if (topPiece != null)
+            {
+                yOffset += topPiece.transform.localPosition.y;
+            }
+            
             transform.SetParent(cell.transform);
-            transform.localPosition = new Vector3(0, 0.1f, 0);
+            transform.localPosition = new Vector3(0f, yOffset, 0f);
             
             var color = _colors[Random.Range(0, _colors.Length)];
             StartCoroutine(AnimateHexes(color));
-
         }
         
         private IEnumerator AnimateHexes(Color color)

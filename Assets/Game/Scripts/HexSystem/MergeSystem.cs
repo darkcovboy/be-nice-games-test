@@ -32,12 +32,6 @@ namespace Game.Scripts.HexSystem
         {
             _isMerging = true;
 
-            if (startCell == null || startCell.IsEmpty)
-            {
-                _isMerging = false;
-                yield break;
-            }
-
             yield return MergeFromCell(startCell);
 
             _isMerging = false;
@@ -51,6 +45,7 @@ namespace Game.Scripts.HexSystem
             if (fromCell.IsEmpty)
                 yield break;
             
+            Debug.Log("Merging from " + fromCell);
 
             _buffer.Clear();
             foreach (var p in fromCell.HexPieces)
@@ -63,7 +58,8 @@ namespace Game.Scripts.HexSystem
             float currentDelay = 0f;
             HexColorType? lastColor = null;
             List<Tween> currentColorTweens = new();
-
+            
+            
             
             foreach (var piece in _buffer)
             {
@@ -85,12 +81,8 @@ namespace Game.Scripts.HexSystem
                     lastColor = color;
                 }
                 
-                for (var i = 0; i < neighbors.Length; i++)
+                foreach (var neighbor in neighbors)
                 {
-                    var neighbor = neighbors[i];
-                    if (neighbor.IsFull)
-                        continue;
-
                     if (neighbor.IsEmpty || neighbor.GetTop().ColorType != color) continue;
 
                     fromCell.Pop();
@@ -99,15 +91,12 @@ namespace Game.Scripts.HexSystem
                     
                     float actualDuration = _moveDuration / _currentSpeedMultiplier;
 
-                    Tween tween = piece.MoveTo(target, actualDuration)
-                        .SetDelay(currentDelay)
-                        .OnComplete(() =>
-                        {
-                            TryCollapse(neighbor);
-                            affectedNeighbors.Add(neighbor);
-                        });
-                    
                     neighbor.Add(piece);
+
+                    Tween tween = piece.MoveTo(target, actualDuration)
+                        .SetDelay(currentDelay);
+                    
+                    affectedNeighbors.Add(neighbor);
                     currentColorTweens.Add(tween);
                     currentDelay += delayStep;
                     break;
@@ -119,55 +108,78 @@ namespace Game.Scripts.HexSystem
             
             foreach (var neighbor in affectedNeighbors)
             {
+                yield return TryCollapse(neighbor);
                 yield return MergeFromCell(neighbor);
             }
             
             _currentSpeedMultiplier *= 1.3f;
         }
         
-        private void TryCollapse(HexCell cell)
+        private IEnumerator TryCollapse(HexCell cell)
         {
-            if (cell.HexPieces.Count < _maxStack)
-                return;
+            if (cell.HexPieces.Count == 0)
+                yield break;
 
-            var pieces = cell.HexPieces.ToArray();
-            var firstColor = pieces[0].ColorType;
-            bool allSame = true;
 
-            for (int i = 1; i < pieces.Length; i++)
+            var piecesArray = cell.HexPieces.ToArray();
+
+            int count = piecesArray.Length;
+            int seriesCount = 1;
+            HexColorType currentColor = piecesArray[0].ColorType;
+
+            for (int i = 1; i < count; i++)
             {
-                if (pieces[i].ColorType != firstColor)
+                if (piecesArray[i].ColorType == currentColor)
                 {
-                    allSame = false;
-                    break;
+                    seriesCount++;
+                }
+                else
+                {
+                    if (seriesCount >= _maxStack)
+                    {
+                        yield return DisappearPieces(cell, piecesArray, i - seriesCount, seriesCount);
+                        yield break;
+                    }
+
+                    currentColor = piecesArray[i].ColorType;
+                    seriesCount = 1;
                 }
             }
 
-            if (!allSame)
-                return;
+            if (seriesCount >= _maxStack)
+                yield return DisappearPieces(cell, piecesArray, count - seriesCount, seriesCount);
 
-            StartCoroutine(DisappearPieces(cell, pieces));
         }
 
-        private IEnumerator DisappearPieces(HexCell cell, HexPiece[] pieces)
+        private IEnumerator DisappearPieces(HexCell cell, HexPiece[] piecesArray, int startIndex, int length)
         {
-            cell.HexPieces.Clear();
-
             float baseDuration = 0.25f;
             float actualDuration = baseDuration / _currentSpeedMultiplier;
             float delayStep = 0.05f;
 
-            for (int i = 0; i < pieces.Length; i++)
+            List<HexPiece> toRemove = new List<HexPiece>();
+            for (int i = startIndex; i < startIndex + length; i++)
+                toRemove.Add(piecesArray[i]);
+
+            for (int i = 0; i < toRemove.Count; i++)
             {
-                var piece = pieces[i];
+                var piece = toRemove[i];
+                if (piece == null) continue;
 
                 piece.Disappear(actualDuration)
-                    .SetDelay(i * delayStep);
+                    .SetDelay(i * delayStep)
+                    .OnComplete(() =>
+                    {
+                        cell.HexPieces.Pop(); // удаляем сверху вниз
+                        Destroy(piece.gameObject);
+                    });
             }
-            
-            yield return new WaitForSeconds(actualDuration  + pieces.Length * delayStep);
-            OnCollapse?.Invoke(cell);
-        }
 
+            yield return new WaitForSeconds(actualDuration + toRemove.Count * delayStep);
+
+            OnCollapse?.Invoke(cell);
+
+            yield return new WaitForSeconds(0.6f);
+        }
     }
 }

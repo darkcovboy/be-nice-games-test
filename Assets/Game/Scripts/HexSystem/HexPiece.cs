@@ -37,12 +37,8 @@ namespace Game.Scripts.HexSystem
             dir.y = 0f;
             dir.Normalize();
 
-            float yAngle = GetHexFlipYAngle(dir);
+            var (yAngle, flipAngle) = GetHexFlipAngles(dir);
             transform.rotation = Quaternion.Euler(0f, yAngle, 0f);
-
-            float flipAngle = dir.z >= 0f ? -180f : 180f;
-            if (yAngle == 0f)
-                flipAngle *= -1;
 
             Sequence seq = DOTween.Sequence();
 
@@ -73,18 +69,27 @@ namespace Game.Scripts.HexSystem
             });
         }
 
-        private float GetHexFlipYAngle(Vector3 dir)
+        private (float yAngle, float flipAngle) GetHexFlipAngles(Vector3 dir)
         {
             float angle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
 
-            angle = Mathf.Repeat(angle + 180f, 360f) - 180f;
+            if (angle > -30f && angle <= 30f)
+                return (0f, 180f); // вверх
+            if (angle > 150f || angle <= -150f)
+                return (0f, -180f); // вниз
 
-            return angle switch
-            {
-                > -30f and <= 30f => 0f,
-                > 30f and <= 150f => -120f,
-                _ => 120f
-            };
+            if (angle > 30f && angle <= 90f)
+                return (-120f, -180f); // левый верхний
+            if (angle > -150f && angle <= -90f)
+                return (-120f, 180f);  // правый нижний
+
+            if (angle > 90f && angle <= 150f)
+                return (120f, 180f); // левый нижний
+            if (angle > -90f && angle <= -30f)
+                return (120f, -180f); // правый верхний
+
+            return (0f, 180f);
         }
+
     }
 }

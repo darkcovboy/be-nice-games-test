@@ -27,34 +27,37 @@ namespace Game.Scripts.HexSystem
         public Tween MoveTo(Vector3 target, float duration, float arcHeight = 1.25f)
         {
             _activeTween?.Kill();
-            
+
             Vector3 start = transform.position;
             Vector3 middle = (start + target) / 2f;
             middle.y += arcHeight;
             Vector3[] path = { start, middle, target };
 
             Vector3 dir = (target - start);
-            dir.y = 0;
+            dir.y = 0f;
             dir.Normalize();
 
             float yAngle = GetHexFlipYAngle(dir);
+            transform.rotation = Quaternion.Euler(0f, yAngle, 0f);
 
-            Quaternion baseRot = transform.rotation;
-            Quaternion flipAxisRot = Quaternion.Euler(0f, yAngle, 0f);
-            Vector3 localAxis = flipAxisRot * Vector3.right;
+            float flipAngle = dir.z >= 0f ? -180f : 180f;
+            if (yAngle == 0f)
+                flipAngle *= -1;
 
             Sequence seq = DOTween.Sequence();
 
             seq.Join(transform.DOPath(path, duration, PathType.CatmullRom)
                 .SetEase(Ease.InOutQuad));
 
-            seq.Join(DOVirtual.Float(0f, 180f, duration, angle =>
-            {
-                transform.rotation = baseRot * Quaternion.AngleAxis(angle, localAxis);
-            }).SetEase(Ease.InOutSine));
+            seq.Join(transform.DOLocalRotate(
+                    new Vector3(flipAngle, yAngle, 0f), 
+                    duration)
+                .SetEase(Ease.InOutSine)
+            );
 
             _activeTween = seq;
             return seq;
+
         }
 
         public Tween Disappear(float duration)
@@ -79,8 +82,8 @@ namespace Game.Scripts.HexSystem
             return angle switch
             {
                 > -30f and <= 30f => 0f,
-                > 30f and <= 150f => 120f,
-                _ => -120f
+                > 30f and <= 150f => -120f,
+                _ => 120f
             };
         }
     }

@@ -51,6 +51,7 @@ namespace Game.Scripts.HexSystem
             foreach (var p in fromCell.HexPieces)
                 _buffer.Add(p);
 
+            
             HashSet<HexCell> affectedNeighbors = new HashSet<HexCell>();
             var neighbors = _grid.GetNeighbors(fromCell);
             

@@ -14,7 +14,7 @@ namespace Game.Scripts.HexSystem
             new(-1, 0), new(-1, 1), new(0, 1)
         };
 
-        private Dictionary<Vector2Int, HexCell> _map = new();
+        private readonly Dictionary<Vector2Int, HexCell> _map = new();
         private Dictionary<HexCell, HexCell[]> _neighbors;
 
         private void Awake()
@@ -23,10 +23,8 @@ namespace Game.Scripts.HexSystem
             foreach (var cell in _cells)
                 _map[cell.AxialCoords] = cell;
             
-            
             _neighbors = new Dictionary<HexCell, HexCell[]>(_cells.Count);
             CalculateNeighbors();
-
         }
 
         private void CalculateNeighbors()
@@ -45,7 +43,7 @@ namespace Game.Scripts.HexSystem
                 _neighbors[cell] = list.ToArray();
             }
         }
-
+        
         public HexCell[] GetNeighbors(HexCell cell)
         {
             return _neighbors[cell];

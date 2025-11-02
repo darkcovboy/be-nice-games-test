@@ -73,6 +73,5 @@ namespace Game.Scripts.Effects
                 yield return new WaitForSeconds(_delayBetweenHexes);
             }
         }
-
     }
 }

@@ -14,7 +14,6 @@ namespace Game.Scripts.HexSystem
         
         [SerializeField] private HexGrid _grid;
         [SerializeField] private float _moveDuration = 0.3f;
-        [SerializeField] private float _pieceHeight = 0.1f;
         [SerializeField] private int _maxStack = 10;
 
         private bool _isMerging;
@@ -36,7 +35,6 @@ namespace Game.Scripts.HexSystem
 
             _isMerging = false;
             
-            Debug.Log("Finished merging");
             OnAllMerged?.Invoke();
         }
         
@@ -45,8 +43,6 @@ namespace Game.Scripts.HexSystem
             if (fromCell.IsEmpty)
                 yield break;
             
-            Debug.Log("Merging from " + fromCell);
-
             _buffer.Clear();
             foreach (var p in fromCell.HexPieces)
                 _buffer.Add(p);
@@ -59,8 +55,6 @@ namespace Game.Scripts.HexSystem
             float currentDelay = 0f;
             HexColorType? lastColor = null;
             List<Tween> currentColorTweens = new();
-            
-            
             
             foreach (var piece in _buffer)
             {
@@ -120,8 +114,7 @@ namespace Game.Scripts.HexSystem
         {
             if (cell.HexPieces.Count == 0)
                 yield break;
-
-
+            
             var piecesArray = cell.HexPieces.ToArray();
 
             int count = piecesArray.Length;
@@ -149,7 +142,6 @@ namespace Game.Scripts.HexSystem
 
             if (seriesCount >= _maxStack)
                 yield return DisappearPieces(cell, piecesArray, count - seriesCount, seriesCount);
-
         }
 
         private IEnumerator DisappearPieces(HexCell cell, HexPiece[] piecesArray, int startIndex, int length)
@@ -180,7 +172,7 @@ namespace Game.Scripts.HexSystem
 
             OnCollapse?.Invoke(cell);
 
-            yield return new WaitForSeconds(0.6f);
+            yield return new WaitForSeconds(0.7f);
         }
     }
 }

@@ -10,14 +10,13 @@ namespace Game.Scripts.HexSystem
         [Header("Axial Coordinates (q, r)")]
         [SerializeField] private int _q;
         [SerializeField] private int _r;
-
         public Vector2Int AxialCoords => new(_q, _r);
-        private const int MaxPieces = 10;
         public Stack<HexPiece> HexPieces { get; set; } = new();
 
         private void Awake()
         {
             var children = GetComponentsInChildren<HexPiece>();
+            
             foreach (var piece in children)
             {
                 if (!HexPieces.Contains(piece))
@@ -27,41 +26,23 @@ namespace Game.Scripts.HexSystem
 
             RearrangeStackPositions();
         }
-
+        
         public void Add(HexPiece hexPiece)
         {
             HexPieces.Push(hexPiece);
             hexPiece.SetParentCell(this);
         }
         
-        public HexPiece Pop()
+        public void Pop()
         {
-            if (IsEmpty)
-                return null;
+            if (IsEmpty) return;
 
-            return HexPieces.Pop();
+            HexPieces.Pop();
         }
         
-        public HexPiece GetTop()
-        {
-            return HexPieces.Count > 0 ? HexPieces.Peek() : null;
-        }
-        
-        public bool TryGetPosition(ref Vector3 position)
-        {
-            if (IsFull)
-                return false;
+        public HexPiece GetTop() => HexPieces.Count > 0 ? HexPieces.Peek() : null;
 
-            position = GetTopPositionWorld();
-            return true;
-        }
-        
-        public Vector3 GetTopPositionWorld()
-        {
-            return transform.position + Vector3.up * (HexPieces.Count * 0.2f) + new Vector3(0f,0.2f,0f);
-        }
-
-        public bool IsFull => HexPieces.Count >= MaxPieces;
+        public Vector3 GetTopPositionWorld() => transform.position + Vector3.up * (HexPieces.Count * 0.2f) + new Vector3(0f,0.2f,0f);
 
         private void RearrangeStackPositions()
         {

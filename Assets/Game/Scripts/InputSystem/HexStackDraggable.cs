@@ -22,11 +22,8 @@ namespace Game.Scripts.InputSystem
 
         private bool _isConnected;
 
-        private void Awake()
-        {
-            _startPosition = transform.position;
-        }
-        
+        private void Awake() => _startPosition = transform.position;
+
         public void OnBeginDrag(PointerEventData eventData)
         {
             if(_isConnected)
@@ -43,13 +40,13 @@ namespace Game.Scripts.InputSystem
             if (!_isDragging) return;
 
             Ray ray = _camera.ScreenPointToRay(eventData.position);
+            
             if (Physics.Raycast(ray, out var hit, 100f))
             {
                 Vector3 pos = hit.point;
                 pos.y = _startPosition.y + _liftHeight;
                 transform.position = pos;
             }
-
         }
 
         public void OnEndDrag(PointerEventData eventData)
@@ -60,6 +57,7 @@ namespace Game.Scripts.InputSystem
             _isDragging = false;
 
             HexCell targetCell = TryGetCellUnderCursor(eventData);
+            
             if (targetCell != null && targetCell.IsEmpty)
             {
                 _isConnected = true;
@@ -70,27 +68,19 @@ namespace Game.Scripts.InputSystem
                         targetCell.AddStack(_hexPieces);
                         _mergeSystem.StartMerge(targetCell);
                     });
-                
             }
             else
             {
                 transform.DOMove(_startPosition, _returnDuration)
                     .SetEase(Ease.OutQuad);
             }
-
         }
         
         private HexCell TryGetCellUnderCursor(PointerEventData eventData)
         {
             Ray ray = _camera.ScreenPointToRay(eventData.position);
-            if (Physics.Raycast(ray, out var hit, 100f, _layerMask))
-            {
-                Debug.Log($"Ray hit: {hit.collider.name}");
-                return hit.collider.GetComponent<HexCell>();
-            }
-
-            Debug.Log("No hit");
-            return null;
+            
+            return Physics.Raycast(ray, out var hit, 100f, _layerMask) ? hit.collider.GetComponent<HexCell>() : null;
         }
     }
 }

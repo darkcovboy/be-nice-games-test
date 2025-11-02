@@ -10,6 +10,7 @@ namespace Game.Scripts.HexSystem
     public class MergeSystem : MonoBehaviour
     {
         public event Action<HexCell> OnCollapse;
+        public event Action OnAllMerged;
         
         [SerializeField] private HexGrid _grid;
         [SerializeField] private float _moveDuration = 0.3f;
@@ -40,6 +41,9 @@ namespace Game.Scripts.HexSystem
             yield return MergeFromCell(startCell);
 
             _isMerging = false;
+            
+            Debug.Log("Finished merging");
+            OnAllMerged?.Invoke();
         }
         
         private IEnumerator MergeFromCell(HexCell fromCell)
@@ -60,9 +64,7 @@ namespace Game.Scripts.HexSystem
             HexColorType? lastColor = null;
             List<Tween> currentColorTweens = new();
 
-
             
-
             foreach (var piece in _buffer)
             {
                 var color = piece.ColorType;
@@ -166,5 +168,6 @@ namespace Game.Scripts.HexSystem
             yield return new WaitForSeconds(actualDuration  + pieces.Length * delayStep);
             OnCollapse?.Invoke(cell);
         }
+
     }
 }

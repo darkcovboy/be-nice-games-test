@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using Game.Scripts.HexSystem;
+using Game.Scripts.Tutorial;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -7,6 +8,7 @@ namespace Game.Scripts.InputSystem
 {
     public class HexStackDraggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
+        [SerializeField] private TutorialController _tutorialController;
         [SerializeField] private HexPiece[] _hexPieces;
         [SerializeField] private LayerMask _layerMask;
         [SerializeField] private Camera _camera;
@@ -33,7 +35,7 @@ namespace Game.Scripts.InputSystem
             _isDragging = true;
             transform.DOKill();
             transform.DOMoveY(_liftHeight, 0.15f).SetRelative(true);
-
+            _tutorialController.OnPlayerClickedStack();
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -64,9 +66,11 @@ namespace Game.Scripts.InputSystem
                 transform.DOMove(targetCell.transform.position, 0.25f)
                     .OnComplete(() =>
                     {
+                        _tutorialController.EndTutorial();
                         targetCell.AddStack(_hexPieces);
                         _mergeSystem.StartMerge(targetCell);
                     });
+                
             }
             else
             {

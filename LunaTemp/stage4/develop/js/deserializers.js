@@ -1691,7 +1691,7 @@ Deserializers.productName = "be-nice-games";
 
 Deserializers.lunaInitializationTime = "11/03/2025 08:26:55";
 
-Deserializers.lunaDaysRunning = "0.1";
+Deserializers.lunaDaysRunning = "0.2";
 
 Deserializers.lunaVersion = "6.4.0";
 
@@ -1721,9 +1721,9 @@ Deserializers.isAntiAliasingEnabled = "False";
 
 Deserializers.isRuntimeAnalysisEnabledForCode = "True";
 
-Deserializers.runtimeAnalysisExcludedClassesCount = "1795";
+Deserializers.runtimeAnalysisExcludedClassesCount = "1791";
 
-Deserializers.runtimeAnalysisExcludedMethodsCount = "3857";
+Deserializers.runtimeAnalysisExcludedMethodsCount = "3808";
 
 Deserializers.runtimeAnalysisExcludedModules = "physics2d, prefabs, mecanim-wasm";
 
@@ -1747,7 +1747,7 @@ Deserializers.graphicsConstraint = 28;
 
 Deserializers.linearColorSpace = false;
 
-Deserializers.buildID = "af05d73e-ae62-4dab-ac6c-c46057b5b41e";
+Deserializers.buildID = "a51100bf-0bcc-4872-8dae-d34d54e4dec5";
 
 Deserializers.runtimeInitializeOnLoadInfos = [[["Unity","Collections","NativeLeakDetection","Initialize"],["UnityEngine","Experimental","Rendering","ScriptableRuntimeReflectionSystemSettings","ScriptingDirtyReflectionSystemInstance"]],[["Unity","VisualScripting","RuntimeVSUsageUtility","RuntimeInitializeOnLoadBeforeSceneLoad"]],[],[],[]];
 

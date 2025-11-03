@@ -538,7 +538,7 @@ MonoBehaviour:
     - _ALPHABLEND_ON
   _includedShaderVariants: []
   _excludedShaderVariants: []
-  version: 131
+  version: 144
   _shaderParsedShaders:
   - ParsedSubShaders:
     - Index: 0
@@ -10441,7 +10441,7 @@ MonoBehaviour:
   _modifiedShaders: []
   invalidShaders: 0
   _sceneLightData:
-    PointLightCount: 4
+    PointLightCount: 5
     SpotLightCount: 0
     DirectionalLightCount: 0
     LightmapOn: 1

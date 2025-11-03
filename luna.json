@@ -1,7 +1,7 @@
 {
     "version": "6.4.0",
     "projectId": "121aec35b91dfd34b92cb7e975d9df63",
-    "applicationID": 34179,
+    "applicationID": 0,
     "creativeName": "",
     "pgServer": "EU",
     "window": {
@@ -23472,7 +23472,7 @@
                     },
                     {
                         "name": "ForceInit",
-                        "excluded": true
+                        "excluded": false
                     },
                     {
                         "name": "Goto",

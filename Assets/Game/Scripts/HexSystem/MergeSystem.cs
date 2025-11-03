@@ -106,8 +106,6 @@ namespace Game.Scripts.HexSystem
                 yield return null;
                 yield return StartCoroutine(MergeFromCell(neighbor));
             }
-            
-            _currentSpeedMultiplier *= 1.3f;
         }
         
         private IEnumerator TryCollapse(HexCell cell)
@@ -140,6 +138,7 @@ namespace Game.Scripts.HexSystem
             }
             
 
+            _currentSpeedMultiplier *= 1.3f;
             if (seriesCount >= _maxStack)
             {
                 yield return DisappearPieces(cell, piecesArray, count - seriesCount, seriesCount);
@@ -186,7 +185,7 @@ namespace Game.Scripts.HexSystem
 
             OnCollapse?.Invoke(cell);
 
-            yield return new WaitForSeconds(0.7f);
+            yield return new WaitForSeconds(0.4f);
         }
     }
 }

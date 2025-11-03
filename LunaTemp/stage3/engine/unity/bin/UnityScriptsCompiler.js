@@ -1717,14 +1717,12 @@ if ( TRACE ) { TRACE( "Game.Scripts.HexSystem.MergeSystem#MergeRoutine", this );
                             switch ($step) {
                                 case 0: {
                                     this._isMerging = true;
-                                        UnityEngine.Debug.Log$1("[MERGE] MergeRoutine start from " + (startCell.name || ""));
                                         $enumerator.current = this.MergeFromCell(startCell);
                                         $step = 1;
                                         return true;
                                 }
                                 case 1: {
                                     this._isMerging = false;
-                                        UnityEngine.Debug.Log$1("[MERGE] MergeRoutine finished!");
                                         !Bridge.staticEquals(this.OnAllMerged, null) ? this.OnAllMerged() : null;
 
                                 }
@@ -1921,8 +1919,7 @@ if ( TRACE ) { TRACE( "Game.Scripts.HexSystem.MergeSystem#MergeFromCell", this )
                                     continue;
                                 }
                                 case 17: {
-                                    UnityEngine.Debug.Log$1(System.String.format("[MERGE] Tweens completed. Checking {0} neighbors...", [Bridge.box(affectedNeighbors.Count, System.Int32)]));
-                                        $t5 = Bridge.getEnumerator(affectedNeighbors);
+                                    $t5 = Bridge.getEnumerator(affectedNeighbors);
                                         $step = 18;
                                         continue;
                                 }
@@ -1936,8 +1933,7 @@ if ( TRACE ) { TRACE( "Game.Scripts.HexSystem.MergeSystem#MergeFromCell", this )
                                     continue;
                                 }
                                 case 19: {
-                                    UnityEngine.Debug.Log$1("[MERGE] \u25b6 Checking collapse for " + (neighbor.name || ""));
-                                        $enumerator.current = this.StartCoroutine$1(this.TryCollapse(neighbor));
+                                    $enumerator.current = this.StartCoroutine$1(this.TryCollapse(neighbor));
                                         $step = 20;
                                         return true;
                                 }
@@ -1947,8 +1943,7 @@ if ( TRACE ) { TRACE( "Game.Scripts.HexSystem.MergeSystem#MergeFromCell", this )
                                         return true;
                                 }
                                 case 21: {
-                                    UnityEngine.Debug.Log$1("[MERGE] \u25b6 Recursing into " + (neighbor.name || ""));
-                                        $enumerator.current = this.StartCoroutine$1(this.MergeFromCell(neighbor));
+                                    $enumerator.current = this.StartCoroutine$1(this.MergeFromCell(neighbor));
                                         $step = 22;
                                         return true;
                                 }
@@ -1957,8 +1952,6 @@ if ( TRACE ) { TRACE( "Game.Scripts.HexSystem.MergeSystem#MergeFromCell", this )
                                     continue;
                                 }
                                 case 23: {
-                                    this._currentSpeedMultiplier *= 1.3;
-                                        UnityEngine.Debug.Log$1(System.String.format("[MERGE] Speed multiplier increased \u2192 {0:F2}", [Bridge.box(this._currentSpeedMultiplier, System.Single, System.Single.format, System.Single.getHashCode)]));
 
                                 }
                                 default: {
@@ -2002,10 +1995,7 @@ if ( TRACE ) { TRACE( "Game.Scripts.HexSystem.MergeSystem#TryCollapse", this ); 
                                         continue;
                                 }
                                 case 1: {
-                                    UnityEngine.Debug.Log$1("[COLLAPSE] " + (cell.name || "") + " is empty \u2192 skip");
-                                        return false;
-                                    $step = 2;
-                                    continue;
+                                    return false;
                                 }
                                 case 2: {
                                     piecesArray = cell.HexPieces.ToArray();
@@ -2038,13 +2028,11 @@ if ( TRACE ) { TRACE( "Game.Scripts.HexSystem.MergeSystem#TryCollapse", this ); 
                                         continue;
                                 }
                                 case 5: {
-                                    UnityEngine.Debug.Log$1(System.String.format("[COLLAPSE] Found {0} in {1} ({2}) \u2192 collapse", Bridge.box(seriesCount, System.Int32), cell.name, Bridge.box(currentColor, Game.Scripts.HexSystem.HexColorType, System.Enum.toStringFn(Game.Scripts.HexSystem.HexColorType))));
-                                        $enumerator.current = this.DisappearPieces(cell, piecesArray, ((i - seriesCount) | 0), seriesCount);
+                                    $enumerator.current = this.DisappearPieces(cell, piecesArray, ((i - seriesCount) | 0), seriesCount);
                                         $step = 6;
                                         return true;
                                 }
                                 case 6: {
-                                    UnityEngine.Debug.Log$1("[COLLAPSE] Disappeared");
                                     $step = 7;
                                     continue;
                                 }
@@ -2060,7 +2048,7 @@ if ( TRACE ) { TRACE( "Game.Scripts.HexSystem.MergeSystem#TryCollapse", this ); 
                                     continue;
                                 }
                                 case 9: {
-                                    UnityEngine.Debug.Log$1("[COLLAPSE] check collapse finished");
+                                    this._currentSpeedMultiplier *= 1.3;
                                         if (seriesCount >= this._maxStack) {
                                             $step = 10;
                                             continue;
@@ -2069,8 +2057,7 @@ if ( TRACE ) { TRACE( "Game.Scripts.HexSystem.MergeSystem#TryCollapse", this ); 
                                         continue;
                                 }
                                 case 10: {
-                                    UnityEngine.Debug.Log$1(System.String.format("[COLLAPSE] End of stack {0} in {1} ({2}) \u2192 collapse", Bridge.box(seriesCount, System.Int32), cell.name, Bridge.box(currentColor, Game.Scripts.HexSystem.HexColorType, System.Enum.toStringFn(Game.Scripts.HexSystem.HexColorType))));
-                                        $enumerator.current = this.DisappearPieces(cell, piecesArray, ((count - seriesCount) | 0), seriesCount);
+                                    $enumerator.current = this.DisappearPieces(cell, piecesArray, ((count - seriesCount) | 0), seriesCount);
                                         $step = 11;
                                         return true;
                                 }
@@ -2120,8 +2107,7 @@ if ( TRACE ) { TRACE( "Game.Scripts.HexSystem.MergeSystem#DisappearPieces", this
                         for (;;) {
                             switch ($step) {
                                 case 0: {
-                                    UnityEngine.Debug.Log$1(System.String.format("[COLLAPSE] \u25b6 Disappearing {0} pieces from {1}", Bridge.box(length, System.Int32), cell.name));
-                                        baseDuration = 0.25;
+                                    baseDuration = 0.25;
                                         actualDuration = baseDuration / this._currentSpeedMultiplier;
                                         delayStep = 0.05;
                                         toRemove = new (System.Collections.Generic.List$1(Game.Scripts.HexSystem.HexPiece)).ctor();
@@ -2171,8 +2157,7 @@ if ( TRACE ) { TRACE( "Game.Scripts.HexSystem.MergeSystem#DisappearPieces", this
                                     continue;
                                 }
                                 case 6: {
-                                    UnityEngine.Debug.Log$1("After wait in Disappear Pieces");
-                                        $t1 = Bridge.getEnumerator(toRemove);
+                                    $t1 = Bridge.getEnumerator(toRemove);
                                         try {
                                             while ($t1.moveNext()) {
                                                 piece2 = $t1.Current;
@@ -2186,14 +2171,12 @@ if ( TRACE ) { TRACE( "Game.Scripts.HexSystem.MergeSystem#DisappearPieces", this
                                                 $t1.System$IDisposable$Dispose();
                                             }
                                         }
-                                        UnityEngine.Debug.Log$1("Destroy Pieces");
                                         !Bridge.staticEquals(this.OnCollapse, null) ? this.OnCollapse(cell) : null;
-                                        $enumerator.current = new UnityEngine.WaitForSeconds(0.7);
+                                        $enumerator.current = new UnityEngine.WaitForSeconds(0.4);
                                         $step = 7;
                                         return true;
                                 }
                                 case 7: {
-                                    UnityEngine.Debug.Log$1("After Wait " + (cell.name || ""));
 
                                 }
                                 default: {

@@ -38,10 +38,8 @@ namespace Game.Scripts.HexSystem
 		private IEnumerator MergeRoutine(HexCell startCell)
 		{
 			_isMerging = true;
-			Debug.Log("[MERGE] MergeRoutine start from " + startCell.name);
 			yield return MergeFromCell(startCell);
 			_isMerging = false;
-			Debug.Log("[MERGE] MergeRoutine finished!");
 			this.OnAllMerged?.Invoke();
 		}
 
@@ -100,24 +98,18 @@ namespace Game.Scripts.HexSystem
 			{
 				yield return t.WaitForCompletion();
 			}
-			Debug.Log($"[MERGE] Tweens completed. Checking {affectedNeighbors.Count} neighbors...");
 			foreach (HexCell neighbor in affectedNeighbors)
 			{
-				Debug.Log("[MERGE] ▶ Checking collapse for " + neighbor.name);
 				yield return StartCoroutine(TryCollapse(neighbor));
 				yield return null;
-				Debug.Log("[MERGE] ▶ Recursing into " + neighbor.name);
 				yield return StartCoroutine(MergeFromCell(neighbor));
 			}
-			_currentSpeedMultiplier *= 1.3f;
-			Debug.Log($"[MERGE] Speed multiplier increased → {_currentSpeedMultiplier:F2}");
 		}
 
 		private IEnumerator TryCollapse(HexCell cell)
 		{
 			if (cell.HexPieces.Count == 0)
 			{
-				Debug.Log("[COLLAPSE] " + cell.name + " is empty → skip");
 				yield break;
 			}
 			HexPiece[] piecesArray = cell.HexPieces.ToArray();
@@ -133,24 +125,20 @@ namespace Game.Scripts.HexSystem
 				}
 				if (seriesCount >= _maxStack)
 				{
-					Debug.Log($"[COLLAPSE] Found {seriesCount} in {cell.name} ({currentColor}) → collapse");
 					yield return DisappearPieces(cell, piecesArray, i - seriesCount, seriesCount);
-					Debug.Log("[COLLAPSE] Disappeared");
 				}
 				currentColor = piecesArray[i].ColorType;
 				seriesCount = 1;
 			}
-			Debug.Log("[COLLAPSE] check collapse finished");
+			_currentSpeedMultiplier *= 1.3f;
 			if (seriesCount >= _maxStack)
 			{
-				Debug.Log($"[COLLAPSE] End of stack {seriesCount} in {cell.name} ({currentColor}) → collapse");
 				yield return DisappearPieces(cell, piecesArray, count - seriesCount, seriesCount);
 			}
 		}
 
 		private IEnumerator DisappearPieces(HexCell cell, HexPiece[] piecesArray, int startIndex, int length)
 		{
-			Debug.Log($"[COLLAPSE] ▶ Disappearing {length} pieces from {cell.name}");
 			float baseDuration = 0.25f;
 			float actualDuration = baseDuration / _currentSpeedMultiplier;
 			float delayStep = 0.05f;
@@ -176,7 +164,6 @@ namespace Game.Scripts.HexSystem
 					yield return t.WaitForCompletion();
 				}
 			}
-			Debug.Log("After wait in Disappear Pieces");
 			foreach (HexPiece piece2 in toRemove)
 			{
 				if (piece2 != null)
@@ -185,10 +172,8 @@ namespace Game.Scripts.HexSystem
 					UnityEngine.Object.Destroy(piece2.gameObject);
 				}
 			}
-			Debug.Log("Destroy Pieces");
 			this.OnCollapse?.Invoke(cell);
-			yield return new WaitForSeconds(0.7f);
-			Debug.Log("After Wait " + cell.name);
+			yield return new WaitForSeconds(0.4f);
 		}
 	}
 }

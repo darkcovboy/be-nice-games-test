@@ -179,7 +179,7 @@ namespace Game.Scripts.HexSystem
                 if (piece != null)
                 {
                     cell.HexPieces.Pop();
-                    Destroy(piece.gameObject);
+                    piece.gameObject.SetActive(false);
                 }
             }
 

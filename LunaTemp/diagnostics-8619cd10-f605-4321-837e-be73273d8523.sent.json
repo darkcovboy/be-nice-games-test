@@ -1,24 +1,24 @@
 {
-  "BuildID": "a51100bf-0bcc-4872-8dae-d34d54e4dec5",
+  "BuildID": "8619cd10-f605-4321-837e-be73273d8523",
   "Command": "project:build",
   "ProjectID": "121aec35b91dfd34b92cb7e975d9df63",
-  "ProjectStateHash": "23e2569a07c23c195a2ce83db906073802626504ff1c60714aa4652949271d7a",
+  "ProjectStateHash": "c8d9e38c9da45fb246ad2e07fff68cd9736d70e57e9c7bd8da3d0843cea02aad",
   "StageCompletedAt": 3,
   "EarliestFatalError": 0,
-  "StartTime": 1762171610856,
-  "EndTime": 1762171637816,
+  "StartTime": 1762173168199,
+  "EndTime": 1762173187505,
   "PlaygroundUserID": 29044,
   "OperatingSystem": "win32",
   "UnityPackageID": null,
   "TargetPlatform": "develop",
   "UnityVersion": "2021.3.45f2",
   "LunaVersion": "6.4.0",
-  "LogCount": 6,
+  "LogCount": 5,
   "Logs": [
     {
-      "LogID": "43ecc2a8-86e9-456a-84f4-f704c46f407e",
-      "Order": 2,
-      "Timestamp": 1762171637976,
+      "LogID": "6b77b6c7-6f55-4b89-8c60-41f88ba34ee3",
+      "Order": 1,
+      "Timestamp": 1762173187678,
       "Stage": 3,
       "ErrorType": 0,
       "ErrorCode": "LP3014",
@@ -40,9 +40,9 @@
       "Severity": 0
     },
     {
-      "LogID": "8b7a4c67-48de-4a13-b324-6ce597860fc8",
-      "Order": 2,
-      "Timestamp": 1762171637982,
+      "LogID": "cbf727ff-9eea-43de-af3f-41e29d598f03",
+      "Order": 1,
+      "Timestamp": 1762173187684,
       "Stage": 3,
       "ErrorType": 1,
       "ErrorCode": "LP3006",
@@ -66,9 +66,9 @@
       "Severity": 0
     },
     {
-      "LogID": "d084f3d2-22fa-45ba-b7e3-ccdfe1f61e8a",
-      "Order": 2,
-      "Timestamp": 1762171637983,
+      "LogID": "c2bd158f-6f7f-440d-aa4e-df4dfd46f0b9",
+      "Order": 1,
+      "Timestamp": 1762173187685,
       "Stage": 3,
       "ErrorType": 1,
       "ErrorCode": "LP3015",
@@ -92,9 +92,9 @@
       "Severity": 0
     },
     {
-      "LogID": "3e9a429e-2b45-4756-9c20-d3cc2ae4e222",
-      "Order": 2,
-      "Timestamp": 1762171637983,
+      "LogID": "83fe51f3-b61a-453d-945f-10e2829c7900",
+      "Order": 1,
+      "Timestamp": 1762173187685,
       "Stage": 3,
       "ErrorType": 3,
       "ErrorCode": "LP3007",
@@ -116,9 +116,9 @@
       "Severity": 0
     },
     {
-      "LogID": "6b86d55c-5127-49c8-852b-4e18757f3bf5",
-      "Order": 2,
-      "Timestamp": 1762171637983,
+      "LogID": "f9ef8eeb-afb0-400e-8206-f09a2c35f264",
+      "Order": 1,
+      "Timestamp": 1762173187686,
       "Stage": 3,
       "ErrorType": 3,
       "ErrorCode": "LP3011",
@@ -130,29 +130,6 @@
       "DetailsValues": null,
       "LogCount": 1,
       "LinePosition": null,
-      "FilePath": "",
-      "ClassName": "",
-      "MemberName": "",
-      "Severity": 0
-    },
-    {
-      "LogID": "26e01d66-baf4-41ae-8a49-462fe37d9eff",
-      "Order": 0,
-      "Timestamp": 1762171614108,
-      "Stage": 1,
-      "ErrorType": 2,
-      "ErrorCode": "LP1024",
-      "Description": "Huge RAM usage",
-      "Details": [
-        "Playable have huge RAM usage (414,46 MB). Recommended RAM value is lower than 256,00 MB to support low-end devices"
-      ],
-      "DescriptionValues": [],
-      "DetailsValues": [
-        "256,00",
-        "414,46"
-      ],
-      "LogCount": 1,
-      "LinePosition": 0,
       "FilePath": "",
       "ClassName": "",
       "MemberName": "",

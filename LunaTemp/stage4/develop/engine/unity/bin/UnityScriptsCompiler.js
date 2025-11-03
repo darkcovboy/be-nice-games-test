@@ -2163,7 +2163,7 @@ if ( TRACE ) { TRACE( "Game.Scripts.HexSystem.MergeSystem#DisappearPieces", this
                                                 piece2 = $t1.Current;
                                                 if (UnityEngine.MonoBehaviour.op_Inequality(piece2, null)) {
                                                     cell.HexPieces.Pop();
-                                                    UnityEngine.Object.Destroy(piece2.gameObject);
+                                                    piece2.gameObject.SetActive(false);
                                                 }
                                             }
                                         } finally {

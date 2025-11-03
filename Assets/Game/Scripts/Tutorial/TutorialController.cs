@@ -46,7 +46,7 @@ namespace Game.Scripts.Tutorial
         private void MoveHandTo(Vector3 worldPos)
         {
             Vector3 screenPos = _mainCamera.WorldToScreenPoint(worldPos);
-            _handPointer.position = screenPos + new Vector3(0, -100f, 0);
+            _handPointer.position = screenPos + new Vector3(50f, -40f, 0);
 
             _handPointer
                 .DOAnchorPosY(_handPointer.anchoredPosition.y + 40f, 0.7f)

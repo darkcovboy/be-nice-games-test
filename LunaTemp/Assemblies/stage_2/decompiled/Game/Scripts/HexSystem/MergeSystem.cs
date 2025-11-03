@@ -169,7 +169,7 @@ namespace Game.Scripts.HexSystem
 				if (piece2 != null)
 				{
 					cell.HexPieces.Pop();
-					UnityEngine.Object.Destroy(piece2.gameObject);
+					piece2.gameObject.SetActive(false);
 				}
 			}
 			this.OnCollapse?.Invoke(cell);

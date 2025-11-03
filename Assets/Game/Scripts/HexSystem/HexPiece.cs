@@ -65,7 +65,6 @@ namespace Game.Scripts.HexSystem
             return seq.OnComplete(() =>
             {
                 _activeTween = null;
-                Destroy(gameObject);
             });
         }
 

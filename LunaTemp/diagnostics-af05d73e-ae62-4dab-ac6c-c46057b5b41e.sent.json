@@ -1,0 +1,139 @@
+{
+  "BuildID": "af05d73e-ae62-4dab-ac6c-c46057b5b41e",
+  "Command": "project:build",
+  "ProjectID": "121aec35b91dfd34b92cb7e975d9df63",
+  "ProjectStateHash": "cd25c1c7dac487bdd6017470050e12982f6d4284a9fe37a704a20ec196b5d34f",
+  "StageCompletedAt": 3,
+  "EarliestFatalError": 0,
+  "StartTime": 1762163344542,
+  "EndTime": 1762163368873,
+  "PlaygroundUserID": 29044,
+  "OperatingSystem": "win32",
+  "UnityPackageID": null,
+  "TargetPlatform": "develop",
+  "UnityVersion": "2021.3.45f2",
+  "LunaVersion": "6.4.0",
+  "LogCount": 5,
+  "Logs": [
+    {
+      "LogID": "feba7970-d314-4c24-86c3-cf7f7adaa67a",
+      "Order": 1,
+      "Timestamp": 1762163369052,
+      "Stage": 3,
+      "ErrorType": 0,
+      "ErrorCode": "LP3014",
+      "Description": "You are using the wrong API: Application.OpenURL.",
+      "Details": [
+        "You are using the wrong API: Application.OpenURL. which can lead to ad networks rejecting the playable. Please use Luna.Unity.Playable.InstallFullGame() instead. "
+      ],
+      "DescriptionValues": [
+        "Application.OpenURL"
+      ],
+      "DetailsValues": [
+        "Application.OpenURL"
+      ],
+      "LogCount": 1,
+      "LinePosition": 46,
+      "FilePath": "C:\\Users\\Dillon\\Documents\\!work\\be-nice-games-test\\LunaTemp\\Assemblies\\stage_2\\decompiled\\Game\\Scripts\\Packshot\\PackshotController.cs",
+      "ClassName": "",
+      "MemberName": "",
+      "Severity": 0
+    },
+    {
+      "LogID": "9f36321b-323d-4526-80cf-ee8b3dd6349b",
+      "Order": 1,
+      "Timestamp": 1762163369058,
+      "Stage": 3,
+      "ErrorType": 1,
+      "ErrorCode": "LP3006",
+      "Description": "You are not using the Luna API: Playable.InstallFullGame",
+      "Details": [
+        "You are not using the Luna API: Playable.InstallFullGame. Some ad networks require these calls. Please add these calls to ensure your playable works on all ad networks. Check documentation for more information."
+      ],
+      "DescriptionValues": [
+        "Playable",
+        "InstallFullGame"
+      ],
+      "DetailsValues": [
+        "Playable",
+        "InstallFullGame"
+      ],
+      "LogCount": 1,
+      "LinePosition": null,
+      "FilePath": "",
+      "ClassName": "",
+      "MemberName": "",
+      "Severity": 0
+    },
+    {
+      "LogID": "79ffb9ed-c893-4142-8f95-d2bafaf49db3",
+      "Order": 1,
+      "Timestamp": 1762163369059,
+      "Stage": 3,
+      "ErrorType": 1,
+      "ErrorCode": "LP3015",
+      "Description": "You are not the Game Ended API: LifeCycle.GameEnded",
+      "Details": [
+        "You are not using the Game Ended API: LifeCycle.GameEnded. Some ad networks require this call, please add the event to avoid the ad being rejected."
+      ],
+      "DescriptionValues": [
+        "LifeCycle",
+        "GameEnded"
+      ],
+      "DetailsValues": [
+        "LifeCycle",
+        "GameEnded"
+      ],
+      "LogCount": 1,
+      "LinePosition": null,
+      "FilePath": "",
+      "ClassName": "",
+      "MemberName": "",
+      "Severity": 0
+    },
+    {
+      "LogID": "9d55b7ec-f7c5-48d6-9d3a-ab59c2d5f4e5",
+      "Order": 1,
+      "Timestamp": 1762163369059,
+      "Stage": 3,
+      "ErrorType": 3,
+      "ErrorCode": "LP3007",
+      "Description": "You are not using any custom events",
+      "Details": [
+        "You are not using any custom events. It is recommended to use custom events to have a better understanding of the playable."
+      ],
+      "DescriptionValues": [
+        ""
+      ],
+      "DetailsValues": [
+        ""
+      ],
+      "LogCount": 1,
+      "LinePosition": null,
+      "FilePath": "",
+      "ClassName": "",
+      "MemberName": "",
+      "Severity": 0
+    },
+    {
+      "LogID": "69c19060-a3dd-4736-a7ab-691cf30bd403",
+      "Order": 1,
+      "Timestamp": 1762163369060,
+      "Stage": 3,
+      "ErrorType": 3,
+      "ErrorCode": "LP3011",
+      "Description": "You are not using any LunaPlaygroundFields attributes.",
+      "Details": [
+        "You are not using any LunaPlaygroundFields attributes, it allows you to configure your playable to different concepts to find the best variation, which can drastically improve playable performance on all ad networks."
+      ],
+      "DescriptionValues": null,
+      "DetailsValues": null,
+      "LogCount": 1,
+      "LinePosition": null,
+      "FilePath": "",
+      "ClassName": "",
+      "MemberName": "",
+      "Severity": 0
+    }
+  ]
+}

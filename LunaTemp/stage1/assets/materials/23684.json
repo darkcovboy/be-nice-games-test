@@ -1,0 +1,1 @@
+{"id":23684,"path":"Assets\/Game\/Shaders\/Circle_mask\/Background.mat","assetBundleId":-1,"data":["Background",7,30,3000,0,[["_StencilComp",3],["_Stencil",2],["_StencilOp",0],["_StencilWriteMask",0],["_StencilReadMask",1],["_ColorMask",15],["_UseUIAlphaClip",0]],[["_Color",1,1,1,1]],[["_MainTex_ST",1,1,0,0]],[["_MainTex",null,null]],[]]}

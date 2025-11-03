@@ -34,7 +34,6 @@ namespace Game.Scripts.HexSystem
             yield return MergeFromCell(startCell);
 
             _isMerging = false;
-            
             OnAllMerged?.Invoke();
         }
         
@@ -103,8 +102,9 @@ namespace Game.Scripts.HexSystem
             
             foreach (var neighbor in affectedNeighbors)
             {
-                yield return TryCollapse(neighbor);
-                yield return MergeFromCell(neighbor);
+                yield return StartCoroutine(TryCollapse(neighbor));
+                yield return null;
+                yield return StartCoroutine(MergeFromCell(neighbor));
             }
             
             _currentSpeedMultiplier *= 1.3f;
@@ -114,7 +114,7 @@ namespace Game.Scripts.HexSystem
         {
             if (cell.HexPieces.Count == 0)
                 yield break;
-            
+
             var piecesArray = cell.HexPieces.ToArray();
 
             int count = piecesArray.Length;
@@ -132,16 +132,18 @@ namespace Game.Scripts.HexSystem
                     if (seriesCount >= _maxStack)
                     {
                         yield return DisappearPieces(cell, piecesArray, i - seriesCount, seriesCount);
-                        yield break;
                     }
 
                     currentColor = piecesArray[i].ColorType;
                     seriesCount = 1;
                 }
             }
+            
 
             if (seriesCount >= _maxStack)
+            {
                 yield return DisappearPieces(cell, piecesArray, count - seriesCount, seriesCount);
+            }
         }
 
         private IEnumerator DisappearPieces(HexCell cell, HexPiece[] piecesArray, int startIndex, int length)
@@ -153,22 +155,34 @@ namespace Game.Scripts.HexSystem
             List<HexPiece> toRemove = new List<HexPiece>();
             for (int i = startIndex; i < startIndex + length; i++)
                 toRemove.Add(piecesArray[i]);
+            
+            List<Tween> tweens = new List<Tween>();
+
 
             for (int i = 0; i < toRemove.Count; i++)
             {
                 var piece = toRemove[i];
                 if (piece == null) continue;
 
-                piece.Disappear(actualDuration)
-                    .SetDelay(i * delayStep)
-                    .OnComplete(() =>
-                    {
-                        cell.HexPieces.Pop(); // удаляем сверху вниз
-                        Destroy(piece.gameObject);
-                    });
+                var tween = piece.Disappear(actualDuration)
+                    .SetDelay(i * delayStep);
+                tweens.Add(tween);
             }
 
-            yield return new WaitForSeconds(actualDuration + toRemove.Count * delayStep);
+            foreach (var t in tweens)
+            {
+                if (t.IsActive())
+                    yield return t.WaitForCompletion();
+            }
+            
+            foreach (var piece in toRemove)
+            {
+                if (piece != null)
+                {
+                    cell.HexPieces.Pop();
+                    Destroy(piece.gameObject);
+                }
+            }
 
             OnCollapse?.Invoke(cell);
 

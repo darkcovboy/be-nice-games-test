@@ -10,8 +10,8 @@ namespace Game.Scripts.HexSystem
 
         private readonly Vector2Int[] _neighborOffsets =
         {
-            new(1, 0), new(1, -1), new(0, -1),
-            new(-1, 0), new(-1, 1), new(0, 1)
+            new Vector2Int(1, 0), new Vector2Int(1, -1), new Vector2Int(0, -1),
+            new Vector2Int(-1, 0), new Vector2Int(-1, 1), new Vector2Int(0, 1)
         };
 
         private readonly Dictionary<Vector2Int, HexCell> _map = new();
